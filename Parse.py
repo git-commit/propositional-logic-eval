@@ -17,25 +17,38 @@ t_rpar = ")"
 typeDual = "OPDUAL"
 typeSingle = "OPSINGLE"
 typeVar = "VAR"
+typeConstBool = "CONSTBOOL"
 
 Token = collections.namedtuple('Token', ['type', 'value'])
 
 
 def token_generator(tokens):
     for t in tokens:
+        yield str_to_tok(t)
+
+
+def str_to_tok(t):
         if t == t_lpar:
-            n_tok = Token(t_lpar, t_lpar)
+            return Token(t_lpar, t_lpar)
         elif t == t_rpar:
-            n_tok = Token(t_rpar, t_rpar)
+            return Token(t_rpar, t_rpar)
         elif any(t == op for op in [t_bic, t_imp, t_or, t_and]):
-            n_tok = Token(typeDual, t)
+            return Token(typeDual, t)
         elif t == t_not:
-            n_tok = Token(typeSingle, t)
+            return Token(typeSingle, t)
+        elif str.upper(t) == 'FALSE':
+            return Token(typeConstBool, False)
+        elif str.upper(t) == 'TRUE':
+            return Token(typeConstBool, True)
         elif str.isalnum(t):
-            n_tok = Token(typeVar, t)
+            return Token(typeVar, t)
         else:
             raise SyntaxError("Invalid token: " + t)
-        yield n_tok
+
+
+def parse(text):
+    parser = ParseTreeGenertor()
+    return parser.parse(text)
 
 
 class ParseTreeGenertor:
@@ -85,7 +98,7 @@ class ParseTreeGenertor:
         exprval = self.atom()
 
         if self._accept(typeDual):
-            op = self.tok.value
+            op = self.tok
             right = self.expr()
             exprval = (op, exprval, right)
 
@@ -94,14 +107,14 @@ class ParseTreeGenertor:
     def atom(self):
         'atom ::= (VAR | true | false) | ( expr ) | ¬ expr'
 
-        if self._accept(typeVar):
-            return self.tok.value
+        if self._accept(typeVar) or self._accept(typeConstBool):
+            return self.tok
         elif self._accept(t_lpar):
             exprval = self.expr()
             self._expect(t_rpar)
             return exprval
         elif self._accept(typeSingle):
-            exprval = ('~', self.expr())
+            exprval = (str_to_tok('~'), self.expr())
             return exprval
         else:
             raise SyntaxError('Expected VAR, ( or ~')
