@@ -26,7 +26,7 @@ def token_generator(tokens):
         if t == t_lpar:
             n_tok = Token(t_lpar, t_lpar)
         elif t == t_rpar:
-            n_tok = Token(t_lpar, t_lpar)
+            n_tok = Token(t_rpar, t_rpar)
         elif any(t == op for op in [t_bic, t_imp, t_or, t_and]):
             n_tok = Token(typeDual, t)
         elif t == t_not:
@@ -42,7 +42,6 @@ class ParseTreeGenertor:
 
     def parse(self, text):
         lexed = Lex.lex(text)
-        print(lexed)
 
         self.tokens = token_generator(lexed)
         self.tok = None
@@ -95,14 +94,10 @@ class ParseTreeGenertor:
     def atom(self):
         'atom ::= (VAR | true | false) | ( expr ) | ¬ expr'
 
-        #print(self.tok)
-
         if self._accept(typeVar):
             return self.tok.value
         elif self._accept(t_lpar):
             exprval = self.expr()
-            print(self.tok.value)
-            print(self.nexttok.value)
             self._expect(t_rpar)
             return exprval
         elif self._accept(typeSingle):
@@ -110,15 +105,3 @@ class ParseTreeGenertor:
             return exprval
         else:
             raise SyntaxError('Expected VAR, ( or ~')
-
-
-def parse_expression(inp):
-    pass
-
-
-def parse_product(inp):
-    pass
-
-
-def parse_atom(inp):
-    pass

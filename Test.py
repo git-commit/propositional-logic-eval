@@ -27,4 +27,12 @@ class ParseTest(unittest.TestCase):
 
     def test_parse(self):
         parser = Parse.ParseTreeGenertor()
-        print(parser.parse("b <=> (a <=> ~a)"))
+        self.assertEquals(parser.parse("b <=> (a <=> ~a)"), ('<=>', 'b', ('<=>', 'a', ('~', 'a'))))
+        self.assertEquals(parser.parse("~((a => ((b /\\ c) \\/ d \\/ e) <=> f))"),
+            ('~', ("=>", "a", ("<=>", ("\\/", ("/\\", "b", "c"), ("\\/", "d",  "e")), "f")))
+         )
+
+    def test_parse_priority(self):
+        parser = Parse.ParseTreeGenertor()
+
+        self.assertEquals(parser.parse("a <=> b => c"), ("=>", ("<=>", "a", "b"), "c"))
