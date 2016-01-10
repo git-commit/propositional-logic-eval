@@ -1,13 +1,13 @@
-Quesion in Problem 4.1:
+Question in Problem 4.1:
 Given A |= B
-When solving the problems with pen and paper we try to find models seperately for each side of the equation. We then check if the set of all models of A is contained in the set of all models of B. If it is the entailmend holds.
+When solving the problems with pen and paper we try to find models separately for each side of the equation. We then check if the set of all models of A is contained in the set of all models of B. If it is the entailment holds.
 
-In contrast, when running the program we combine both formulas using theorem 3.1 or 3.2 and check those for a certain trait. E.g. using theorem 3.2. we use the formula A => B and check for a tautology. Iff this assumtion holds, the entailment also holds.
+In contrast, when running the program we combine both formulas using theorem 3.1 or 3.2 and check those for a certain trait. E.g. using theorem 3.2. we use the formula A => B and check for a tautology. Iff this assumption holds, the entailment also holds.
 
 Question in Problem 4.2.3:
 The answers to B and C match the pen and paper solution.
 
-If we query the KB for A or ~A we get false in both cases, which mean that the KB can neither entail A or ~A. This also means that the KB can not decide what A is. The pen and paper solution also makes no statement whether A is a kight or a knave.
+If we query the KB for A or ~A we get false in both cases, which mean that the KB can neither entail A or ~A. This also means that the KB can not decide what A is. The pen and paper solution also makes no statement whether A is a knight or a knave.
 
 KB |/= A, then it must be that KB |= ¬A ?
     kb |/= A => kb |= ~A
