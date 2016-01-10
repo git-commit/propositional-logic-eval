@@ -105,7 +105,7 @@ class ParseTreeGenertor:
         return exprval
 
     def atom(self):
-        'atom ::= (VAR | true | false) | ( expr ) | ¬ expr'
+        'atom ::= (VAR | true | false) | ( expr ) | ¬ atom'
 
         if self._accept(typeVar) or self._accept(typeConstBool):
             return self.tok
@@ -114,7 +114,7 @@ class ParseTreeGenertor:
             self._expect(t_rpar)
             return exprval
         elif self._accept(typeSingle):
-            exprval = (str_to_tok('~'), self.expr())
+            exprval = (str_to_tok('~'), self.atom())
             return exprval
         else:
             raise SyntaxError('Expected VAR, ( or ~')
