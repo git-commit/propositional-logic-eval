@@ -152,7 +152,6 @@ class ExerciseTest(unittest.TestCase):
         csays = "c <=> ~b"
         kb = "(%s) /\\ (%s) " % (bsays, csays)
 
-        print(Eval.entails(kb, "a"))
         self.assertFalse(Eval.entails(kb, "a"))
         self.assertFalse(Eval.entails(kb, "~a"))
         self.assertFalse(Eval.entails(kb, "b"))
