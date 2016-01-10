@@ -72,11 +72,11 @@ Solutions:
 Problem 4.2.3
 Represent what B says with your parser.
 
-bsays = parse "b <=> (a <=> ~a)"
+    bsays = parse "b <=> (a <=> ~a)"
 
 where parse is your parser implementation. Do the same with what C says.
 
-csays = parse "c <=> ~b"
+    csays = parse "c <=> ~b"
 
 Construct a knowledge base —kb of type Formula— by performing conjunc-
 tion of what B and C says. By using the function entails, check whether
