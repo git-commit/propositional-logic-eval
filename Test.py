@@ -158,3 +158,6 @@ class ExerciseTest(unittest.TestCase):
         self.assertTrue(Eval.entails(kb, "~b"))
         self.assertTrue(Eval.entails(kb, "c"))
         self.assertFalse(Eval.entails(kb, "~c"))
+
+    def test_questoin423(self):
+        self.assertFalse(Eval.tautology("~(kb /\ ~A) => (kb /\ A)"))

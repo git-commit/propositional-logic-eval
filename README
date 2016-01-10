@@ -1,0 +1,12 @@
+Program structure:
+The main program is composed of the modules Eval.py, Logic.py, Parse.py and Lex.py dealing with the evaluation logic.
+The test class Test.py can be used for unit testing the program.
+Main.py runs and prints the problem solutions.
+
+Running Main.py:
+Execute the following command in the Terminal (preferably one that supports Unicode characters):
+
+    python3 Main.py
+
+Platform:
+Run on any OS that allows Python 3 to be installed. I myself tested the program on Linux, but OSX and Windows should also work just fine.
