@@ -1,6 +1,7 @@
 import Parse
 import Logic
 
+
 def eval(formula, v):
     '''
     Evaluate the formula with the given valuation
@@ -13,7 +14,6 @@ def eval(formula, v):
     else:  # operator
         token = formula[0]
         op_fun = Logic.get_op(token.value)
-
 
         if token.type is Parse.typeDual:
             left = formula[1]
