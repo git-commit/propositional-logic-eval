@@ -69,13 +69,20 @@ class EvalTest(unittest.TestCase):
         self.assertFalse(Eval.eval(Parse.parse("a <=> b"), {"a": True, "b": False}))
         self.assertTrue(Eval.eval(Parse.parse("a <=> b"), {"a": True, "b": True}))
 
+        self.assertTrue(Eval.eval(Parse.parse("~a"), {"a": False}))
+
+        self.assertTrue(Eval.eval(Parse.parse("~a \\/ b"), {"a": False, "b": False}))
+        self.assertTrue(Eval.eval(Parse.parse("~a \\/ b"), {"a": False, "b": True}))
+        self.assertFalse(Eval.eval(Parse.parse("~a \\/ b"), {"a": True, "b": False}))
+        self.assertTrue(Eval.eval(Parse.parse("~a \\/ b"), {"a": True, "b": True}))
+
 
 
     def test_eval_complex(self):
         self.assertFalse(Eval.eval(Parse.parse("a /\\ ~(a <=> a)"), {"a": False}))
         self.assertFalse(Eval.eval(Parse.parse("a /\\ ~(a <=> a)"), {"a": True}))
 
-        self.assertFalse(Eval.eval(Parse.parse("(Smoke => Fire) => (~Smoke => ~Fire)"), {"Smoke": False, "Fire": False}))
+        self.assertTrue(Eval.eval(Parse.parse("(Smoke => Fire) => (~Smoke => ~Fire)"), {"Smoke": False, "Fire": False}))
         self.assertFalse(Eval.eval(Parse.parse("(Smoke => Fire) => (~Smoke => ~Fire)"), {"Smoke": False, "Fire": True}))
         self.assertTrue(Eval.eval(Parse.parse("(Smoke => Fire) => (~Smoke => ~Fire)"), {"Smoke": True, "Fire": False}))
         self.assertTrue(Eval.eval(Parse.parse("(Smoke => Fire) => (~Smoke => ~Fire)"), {"Smoke": True, "Fire": True}))
@@ -109,8 +116,46 @@ class EvalTest(unittest.TestCase):
         self.assertTrue(Eval.satisfiable("a /\\ b"))
         self.assertFalse(Eval.satisfiable("a /\\ ~a"))
 
+
 class ExerciseTest(unittest.TestCase):
 
     def test_exercise41(self):
         self.assertTrue(Eval.entails("False", "True"))
         self.assertFalse(Eval.entails("True", "False"))
+        self.assertTrue(Eval.entails("a /\\ b", "a <=> b"))
+        self.assertFalse(Eval.entails("a <=> b", "a \\/ b"))
+        self.assertTrue(Eval.entails("a <=> b", "~a \\/ b"))
+
+    def test_exercise42(self):
+        f1 = "Smoke => Smoke"
+        self.assertTrue(Eval.satisfiable(f1))
+        self.assertFalse(Eval.unsatisfiable(f1))
+        self.assertTrue(Eval.tautology(f1))
+
+        f1 = "(Smoke => Fire) => (~Smoke => ~Fire)"
+        self.assertTrue(Eval.satisfiable(f1))
+        self.assertFalse(Eval.unsatisfiable(f1))
+        self.assertFalse(Eval.tautology(f1))
+
+        f1 = "Smoke \\/ Fire\\/ ~Fire"
+        self.assertTrue(Eval.satisfiable(f1))
+        self.assertFalse(Eval.unsatisfiable(f1))
+        self.assertTrue(Eval.tautology(f1))
+
+        f1 = "(Fire => Smoke) /\\ Fire /\\ ~Smoke"
+        self.assertFalse(Eval.satisfiable(f1))
+        self.assertTrue(Eval.unsatisfiable(f1))
+        self.assertFalse(Eval.tautology(f1))
+
+    def test_exercise43(self):
+        bsays = "b <=> (a <=> ~a)"
+        csays = "c <=> ~b"
+        kb = "(%s) /\\ (%s) " % (bsays, csays)
+
+        print(Eval.entails(kb, "a"))
+        self.assertFalse(Eval.entails(kb, "a"))
+        self.assertFalse(Eval.entails(kb, "~a"))
+        self.assertFalse(Eval.entails(kb, "b"))
+        self.assertTrue(Eval.entails(kb, "~b"))
+        self.assertTrue(Eval.entails(kb, "c"))
+        self.assertFalse(Eval.entails(kb, "~c"))
