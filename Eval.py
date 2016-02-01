@@ -83,3 +83,19 @@ def satisfiable(formula):
 
 def entails(f1, f2):
     return tautology("(%s)=>(%s)" % (f1, f2))
+
+
+def num_valid_valuations(formula):
+    formula_tree = Parse.parse(formula)
+    num_valid = 0
+
+    for v in all_valuations(atoms(formula_tree)):
+        if eval(formula_tree, v):
+            num_valid += 1
+
+    return num_valid
+
+
+def num_invalid_valuations(formula):
+    all_val = all_valuations(atoms(Parse.parse(formula)))
+    return len(all_val) - num_valid_valuations(formula)

@@ -100,6 +100,10 @@ Solutions:
     "KB |= ~c = " + str(Eval.entails(kb, "~c"))
     ))
 
+    print("size: %d" % Eval.num_valid_valuations(
+        "((S \\/ ~A) /\\ (~N \\/ ~T \\/ A) /\\ (~C \\/ L \\/ A) /\\ (~U \\/ ~S) /\\ (E))"))
+
+
 def ex42(f):
     s = ""
     if Eval.satisfiable(f):
